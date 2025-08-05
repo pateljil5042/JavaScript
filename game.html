@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Number Guessing Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    #game-container {
+      background: white;
+      padding: 2rem;
+      max-width: 400px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input[type="number"] {
+      padding: 0.5rem;
+      font-size: 1rem;
+      width: 100px;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      margin: 1rem;
+      cursor: pointer;
+    }
+
+    #feedback {
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <h1>Number Guessing Game</h1>
+    <p>Guess a number between 1 and 100</p>
+    <input type="number" id="guessInput" />
+    <button onclick="checkGuess()">Guess</button>
+    <button onclick="newGame()">New Game</button>
+    <p id="feedback"></p>
+  </div>
+
+  <script>
+    let randomNumber;
+    let attempts;
+
+    function newGame() {
+      randomNumber = Math.floor(Math.random() * 100) + 1;
+      attempts = 0;
+      document.getElementById("feedback").textContent = "";
+      document.getElementById("guessInput").value = "";
+    }
+
+    function checkGuess() {
+      const guess = parseInt(document.getElementById("guessInput").value);
+      attempts++;
+
+      if (isNaN(guess) || guess < 1 || guess > 100) {
+        document.getElementById("feedback").textContent = "Please enter a valid number between 1 and 100.";
+        return;
+      }
+
+      if (guess === randomNumber) {
+        document.getElementById("feedback").textContent = `🎉 Correct! You guessed it in ${attempts} attempts.`;
+      } else if (guess < randomNumber) {
+        document.getElementById("feedback").textContent = "Too low! Try again.";
+      } else {
+        document.getElementById("feedback").textContent = "Too high! Try again.";
+      }
+    }
+
+    // Start a new game when page loads
+    newGame();
+  </script>
+
+</body>
+</html>
