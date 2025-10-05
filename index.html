@@ -2,41 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>To-Do List App</title>
+  <title>Contact Form with Validation</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f0f2f5;
+      background-color: #f4f4f4;
       display: flex;
       justify-content: center;
-      margin-top: 50px;
+      padding-top: 50px;
     }
 
-    .todo-container {
+    .form-container {
       background: #fff;
-      padding: 20px 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      width: 350px;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 400px;
     }
 
     h2 {
       text-align: center;
+      margin-bottom: 20px;
     }
 
-    input[type="text"] {
-      width: 75%;
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      width: 100%;
       padding: 10px;
-      margin-right: 5px;
+      font-size: 14px;
       border: 1px solid #ccc;
       border-radius: 5px;
     }
 
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
     button {
-      padding: 10px;
-      border: none;
+      flex: 1;
+      padding: 12px;
       background-color: #28a745;
       color: white;
+      font-size: 16px;
+      border: none;
       border-radius: 5px;
       cursor: pointer;
     }
@@ -45,68 +70,111 @@
       background-color: #218838;
     }
 
-    ul {
-      list-style: none;
-      padding: 0;
-      margin-top: 20px;
-    }
-
-    li {
-      background: #f9f9f9;
-      padding: 10px;
-      margin-bottom: 8px;
-      border-radius: 5px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
     .delete-btn {
       background-color: #dc3545;
-      padding: 5px 10px;
-      border: none;
-      color: white;
-      border-radius: 3px;
-      cursor: pointer;
     }
 
     .delete-btn:hover {
       background-color: #c82333;
     }
+
+    .success {
+      text-align: center;
+      color: green;
+      margin-top: 15px;
+    }
   </style>
 </head>
 <body>
-  <div class="todo-container">
-    <h2>📝 To-Do List</h2>
-    <input type="text" id="taskInput" placeholder="Enter task">
-    <button onclick="addTask()">Add</button>
-    <ul id="taskList"></ul>
+
+  <div class="form-container">
+    <h2>Contact Us</h2>
+    <form id="contactForm">
+      <!-- Name -->
+      <div class="form-group">
+        <label for="name">Name *</label>
+        <input type="text" id="name" placeholder="Your name">
+        <div class="error" id="nameError"></div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="text" id="email" placeholder="Your email">
+        <div class="error" id="emailError"></div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Password *</label>
+        <input type="password" id="password" placeholder="Your password">
+        <div class="error" id="passwordError"></div>
+      </div>
+
+      <!-- Date of Birth -->
+      <div class="form-group">
+        <label for="dob">Date of Birth *</label>
+        <input type="date" id="dob">
+        <div class="error" id="dobError"></div>
+      </div>
+    <button type="submit">Submit</button>
+    </form>
   </div>
 
   <script>
-    function addTask() {
-      const input = document.getElementById("taskInput");
-      const taskText = input.value.trim();
+    document.getElementById("contactForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent default submission
 
-      if (taskText === "") {
-        alert("Please enter a task!");
-        return;
+      // Clear previous errors and success message
+      document.getElementById("nameError").textContent = "";
+      document.getElementById("emailError").textContent = "";
+      document.getElementById("passwordError").textContent = "";
+      document.getElementById("dobError").textContent = "";
+
+      // Get form values
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const dob = document.getElementById("dob").value.trim();
+
+      let isValid = true;
+
+      // Validate Name
+      if (name === "") {
+        document.getElementById("nameError").textContent = "Name is required.";
+        isValid = false;
       }
 
-      const li = document.createElement("li");
-      li.innerHTML = `
-        <span>${taskText}</span>
-        <button class="delete-btn" onclick="deleteTask(this)">Delete</button>
-      `;
+      // Validate Email
+      if (email === "") {
+        document.getElementById("emailError").textContent = "Email is required.";
+        isValid = false;
+      } else if (!validateEmail(email)) {
+        document.getElementById("emailError").textContent = "Invalid email format.";
+        isValid = false;
+      }
 
-      document.getElementById("taskList").appendChild(li);
-      input.value = "";
-    }
+      // Validate Password
+      if (password === "") {
+        document.getElementById("passwordError").textContent = "Password is required.";
+        isValid = false;
+      } else if (password.length < 6) {
+        document.getElementById("passwordError").textContent = "Password must be at least 6 characters.";
+        isValid = false;
+      }
 
-    function deleteTask(button) {
-      const li = button.parentElement;
-      li.remove();
+      // Validate DOB
+      if (dob === "") {
+        document.getElementById("dobError").textContent = "Date of Birth is required.";
+        isValid = false;
+      }
+   
+    // Simple email validator
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+      return re.test(String(email).toLowerCase());
     }
   </script>
+
 </body>
 </html>
