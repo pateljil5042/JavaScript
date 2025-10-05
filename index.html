@@ -1,59 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Portfolio</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <title>To-Do List App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      margin-top: 50px;
+    }
+
+    .todo-container {
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 350px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    input[type="text"] {
+      width: 75%;
+      padding: 10px;
+      margin-right: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px;
+      border: none;
+      background-color: #28a745;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    li {
+      background: #f9f9f9;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      padding: 5px 10px;
+      border: none;
+      color: white;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      background-color: #c82333;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Your Name</h1>
-    <p>Web Developer | Designer | Programmer</p>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+  <div class="todo-container">
+    <h2>📝 To-Do List</h2>
+    <input type="text" id="taskInput" placeholder="Enter task">
+    <button onclick="addTask()">Add</button>
+    <ul id="taskList"></ul>
+  </div>
 
-  <section id="about">
-    <h2>About Me</h2>
-    <p>I am a passionate developer who loves creating websites and learning new technologies.</p>
-  </section>
+  <script>
+    function addTask() {
+      const input = document.getElementById("taskInput");
+      const taskText = input.value.trim();
 
-  <section id="skills">
-    <h2>Skills</h2>
-    <ul>
-      <li>HTML, CSS, JavaScript</li>
-      <li>React, Node.js</li>
-      <li>Java, Python</li>
-        <li>Git & GitHub</li>
-    </ul>
-  </section>
+      if (taskText === "") {
+        alert("Please enter a task!");
+        return;
+      }
 
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="project">
-      <h3>Project Title 1</h3>
-      <p>Description of your project.</p>
-    </div>
-    <div class="project">
-      <h3>Project Title 2</h3>
-      <p>Description of another project.</p>
-    </div>
-  </section>
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <span>${taskText}</span>
+        <button class="delete-btn" onclick="deleteTask(this)">Delete</button>
+      `;
 
-  <section id="contact">
-    <h2>Contact Me</h2>
-    <p>Email:pateljil648@gmail.com</p>
-    <p>LinkedIn: <a href="https://linkedin.com/in/yourprofile" target="_blank">Patel Jil</a></p>
-    <p>GitHub: <a href="https://github.com/yourusername" target="_blank">pateljil5042</a></p>
-  </section>
+      document.getElementById("taskList").appendChild(li);
+      input.value = "";
+    }
 
-  <footer>
-    <p>&copy; 2025 Patel jil</p>
-  </footer>
+    function deleteTask(button) {
+      const li = button.parentElement;
+      li.remove();
+    }
+  </script>
 </body>
 </html>
