@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Grade Tracker</title>
+  <link rel="styleesheet" href="stylee.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Student Grade Tracker</h1>
+
+    <form id="gradeForm">
+      <input type="text" id="name" placeholder="Student Name" required>
+      <input type="text" id="subject" placeholder="Subject" required>
+      <input type="number" id="grade" placeholder="Grade" required>
+      <button type="submit">Add Student</button>
+    </form>
+
+    <table id="gradeTable">
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>Subject</th>
+          <th>Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- New rows will be added here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
