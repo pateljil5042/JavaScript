@@ -2,179 +2,456 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Contact Form with Validation</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      display: flex;
-      justify-content: center;
-      padding-top: 50px;
-    }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Photon Dreams | Premium Photography</title>
+  <meta name="description" content="Photonphotos is a simple HTML photo gallery website with categories for baby, wedding, party, and portrait photos.">
+  <meta name="keywords" content="photo gallery, baby photos, wedding photos, party photos, portrait gallery, HTML project">
+  <meta name="author" content="Photonphotos Team">
 
-    .form-container {
-      background: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      width: 400px;
-    }
+  <!-- Open Graph (for social sharing) -->
+  <meta property="og:title" content="Photonphotos - Photo Gallery Website">
+  <meta property="og:description" content="A clean and simple HTML project showcasing baby, wedding, party, and portrait photos.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://forfreelancer.github.io/Photonphotos/">
+  <meta property="og:image" content="https://forfreelancer.github.io/Photonphotos/bg-img/cover.jpg">
 
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+  <!-- Google Verification -->
+  <meta name="google-site-verification" content="hQYViR0g28JrWmZa4XSrCZhrqBToshQpGafeeQXJC_Y" />
 
-    .form-group {
-      margin-bottom: 15px;
-    }
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .error {
-      color: red;
-      font-size: 13px;
-      margin-top: 5px;
-    }
-
-    .btn-group {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    button {
-      flex: 1;
-      padding: 12px;
-      background-color: #28a745;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #218838;
-    }
-
-    .delete-btn {
-      background-color: #dc3545;
-    }
-
-    .delete-btn:hover {
-      background-color: #c82333;
-    }
-
-    .success {
-      text-align: center;
-      color: green;
-      margin-top: 15px;
-    }
-  </style>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-dark': '#0D0D0D', // A deep, off-black for the background
+                        'brand-light': '#F5F5F5', // A soft off-white for text
+                        'brand-accent': '#EAB308', // A warm, golden-amber accent
+                        'brand-gray': '#A3A3A3', // A neutral gray for secondary text
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth; /* This enables the smooth scrolling animation on click */
+            background-color: #0D0D0D;
+        }
+        .hero-section {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            min-height: 100vh;
+            /* New background image properties */
+            background: url('bg-img/couple-6979881_640.jpg') no-repeat center center;
+            background-size:cover;
+        }
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 0;
+            transform: translateX(-50%) translateY(-50%);
+            object-fit: cover;
+        }
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(13, 13, 13, 0.9) 0%, rgba(13, 13, 13, 0.5) 50%, rgba(13, 13, 13, 0.7) 100%);
+            z-index: 1;
+        }
+        .hero-section .container {
+            position: relative;
+            z-index: 2;
+        }
 
-  <div class="form-container">
-    <h2>Contact Us</h2>
-    <form id="contactForm">
-      <!-- Name -->
-      <div class="form-group">
-        <label for="name">Name *</label>
-        <input type="text" id="name" placeholder="Your name">
-        <div class="error" id="nameError"></div>
-      </div>
+        /* Nav Link Animation */
+        .nav-link {
+            position: relative;
+            padding-bottom: 6px;
+            transition: color 0.3s ease-in-out, transform 0.2s ease; /* Added transitions */
+        }
+        .nav-link:active {
+            transform: scale(0.95); /* Adds a "press down" effect on click */
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #EAB308; /* brand-accent */
+            transform-origin: bottom right;
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .nav-link:hover::after, .nav-link.active::after { /* Rule for hover AND active state */
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+        /* New style for the active navigation link */
+        .nav-link.active {
+            color: #EAB308; /* brand-accent */
+        }
 
-      <!-- Email -->
-      <div class="form-group">
-        <label for="email">Email *</label>
-        <input type="text" id="email" placeholder="Your email">
-        <div class="error" id="emailError"></div>
-      </div>
 
-      <!-- Password -->
-      <div class="form-group">
-        <label for="password">Password *</label>
-        <input type="password" id="password" placeholder="Your password">
-        <div class="error" id="passwordError"></div>
-      </div>
+        /* General Section Animation */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .reveal-element.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-      <!-- Date of Birth -->
-      <div class="form-group">
-        <label for="dob">Date of Birth *</label>
-        <input type="date" id="dob">
-        <div class="error" id="dobError"></div>
-      </div>
-    <button type="submit">Submit</button>
-    </form>
-  </div>
+        /* Staggered animation for hero text */
+        .hero-content > * {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: text-fade-in 0.8s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .hero-content h1 { animation-delay: 0.2s; }
+        .hero-content p { animation-delay: 0.4s; }
+        .hero-content a { animation-delay: 0.6s; }
+        @keyframes text-fade-in {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-  <script>
-    document.getElementById("contactForm").addEventListener("submit", function(event) {
-      event.preventDefault(); // Prevent default submission
+        /* Gallery Image Specific Styles for Swipe */
+        .gallery-image-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 60%;
+            overflow: hidden;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-2xl */
+        }
+        .gallery-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; 
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out; /* Slower, smoother fade */
+        }
+        .gallery-image.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-brand-dark text-brand-light">
 
-      // Clear previous errors and success message
-      document.getElementById("nameError").textContent = "";
-      document.getElementById("emailError").textContent = "";
-      document.getElementById("passwordError").textContent = "";
-      document.getElementById("dobError").textContent = "";
+    <nav class="bg-brand-dark/70 backdrop-blur-lg shadow-lg fixed w-full z-30">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-brand-light hover:text-brand-accent transition-colors duration-300">Photon Dreams</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="nav-link text-brand-gray hover:text-brand-light">About</a>
+                <a href="#gallery" class="nav-link text-brand-gray hover:text-brand-light">Gallery</a>
+                <a href="#contact" class="nav-link text-brand-gray hover:text-brand-light">Contact</a>
+                <a href="#contact" class="bg-brand-accent hover:bg-yellow-600 text-brand-dark font-bold py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">Book Now</a>
+            </div>
+            <button class="md:hidden text-brand-light focus:outline-none" id="mobile-menu-button">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <div class="hidden md:hidden" id="mobile-menu">
+            <a href="#about" class="block py-3 px-6 text-sm text-brand-light hover:bg-brand-dark/50">About</a>
+            <a href="#gallery" class="block py-3 px-6 text-sm text-brand-light hover:bg-brand-dark/50">Gallery</a>
+            <a href="#contact" class="block py-3 px-6 text-sm text-brand-light hover:bg-brand-dark/50">Contact</a>
+            <a href="#contact" class="block py-3 px-6 text-sm bg-brand-accent text-brand-dark text-center font-bold">Book Now</a>
+        </div>
+    </nav>
+    
+    <header class="hero-section text-white" id="home">
+    <div class="container mx-auto text-center px-6 hero-content">
+        <h1 class="text-4xl md:text-7xl font-extrabold mb-4 tracking-tight">Capturing Moments, Creating Art</h1>
+        <p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto text-brand-gray">We transform your precious moments into timeless, cinematic memories. Specializing in portrait, landscape, and event photography.</p>
+        <a href="#gallery" class="bg-brand-accent hover:bg-yellow-600 text-brand-dark font-bold py-4 px-10 rounded-full transition-all duration-300 transform hover:scale-105 text-lg shadow-xl hover:shadow-2xl">Explore My Work</a>
+    </div>
+</header>
 
-      // Get form values
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const dob = document.getElementById("dob").value.trim();
+    <main class="container mx-auto px-6 py-20">
 
-      let isValid = true;
+        <section id="achievements" class="py-16 lg:py-24 reveal-element">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="border-r border-white/10">
+                    <h3 data-target="12" data-suffix="+" class="counter-number text-4xl lg:text-6xl font-bold text-brand-accent">0+</h3>
+                    <p class="text-brand-gray mt-2 tracking-wider uppercase text-sm">Years Experience</p>
+                </div>
+                <div class="md:border-r border-white/10">
+                    <h3 data-target="5000" data-suffix="+" class="counter-number text-4xl lg:text-6xl font-bold text-brand-accent">0+</h3>
+                    <p class="text-brand-gray mt-2 tracking-wider uppercase text-sm">Happy Clients</p>
+                </div>
+                <div class="border-r border-white/10">
+                    <h3 data-target="200" data-prefix="+" class="counter-number text-4xl lg:text-6xl font-bold text-brand-accent">+0</h3>
+                    <p class="text-brand-gray mt-2 tracking-wider uppercase text-sm">Weddings Covered</p>
+                </div>
+                <div>
+                    <h3 data-target="1" class="counter-number text-4xl lg:text-6xl font-bold text-brand-accent">0</h3>
+                    <p class="text-brand-gray mt-2 tracking-wider uppercase text-sm">Dream: Capture Yours</p>
+                </div>
+            </div>
+        </section>
 
-      // Validate Name
-      if (name === "") {
-        document.getElementById("nameError").textContent = "Name is required.";
-        isValid = false;
-      }
+        <section id="about" class="my-16 scroll-mt-20 reveal-element">
+            <div class="flex flex-col md:flex-row items-center gap-12 bg-black/20 p-8 md:p-12 rounded-xl shadow-2xl">
+                <div class="md:w-1/3">
+                    <img src="C:\Users\ptlan\Downloads\Photonphotos-main\WhatsApp Image 2025-11-07 at 18.49.18_57317757.jpg" alt="Portrait of the photographer" loading="lazy" class="rounded-full aspect-square object-cover w-48 h-48 md:w-full md:h-auto mx-auto shadow-lg">
+                </div>
+                <div class="md:w-2/3 text-center md:text-left">
+                    <h1 class="text-3xl font-bold text-brand-light mb-4">  <span style="color: #eab308;">PATEL JEEL</span></h1>
+                    <div class="md:w-2/3 text-center md:text-left"></div>
+                    <h2 class="text-3xl font-bold text-brand-light mb-4">A Passion for Visual Storytelling</h2>
+                    <p class="text-brand-gray leading-relaxed">
+                        Welcome to Photon Dreams. I'm a passionate photographer with a keen eye for detail and a love for storytelling. My goal is to capture the authentic emotion and beauty in every shot, creating images that you'll cherish for a lifetime. Whether it's a quiet landscape or a bustling event, I strive to create art that resonates and tells your unique story.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-      // Validate Email
-      if (email === "") {
-        document.getElementById("emailError").textContent = "Email is required.";
-        isValid = false;
-      } else if (!validateEmail(email)) {
-        document.getElementById("emailError").textContent = "Invalid email format.";
-        isValid = false;
-      }
+        <section id="gallery" class="my-24 scroll-mt-20 reveal-element">
+            <h2 class="text-4xl font-bold text-center text-brand-light mb-4"> <span style="color: #eab308;">My Portfolio</span></h2>
+            <p class="text-center max-w-2xl mx-auto mb-12 text-brand-gray">Explore the diverse range of moments I love to capture. Each category tells a unique story.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <a href="baby.html" class="group relative block h-80 rounded-lg overflow-hidden shadow-2xl">
+                    <img src="babyphotos/pexels-vika-glitter-392079-1648377.jpg" alt="A cute baby smiling" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-8">
+                        <h3 class="text-3xl font-bold text-white">Baby Photos</h3>
+                        <p class="text-white/80 mt-2">View Gallery &rarr;</p>
+                    </div>
+                </a>
 
-      // Validate Password
-      if (password === "") {
-        document.getElementById("passwordError").textContent = "Password is required.";
-        isValid = false;
-      } else if (password.length < 6) {
-        document.getElementById("passwordError").textContent = "Password must be at least 6 characters.";
-        isValid = false;
-      }
+                <a href="wedding.html" class="group relative block h-80 rounded-lg overflow-hidden shadow-2xl">
+                    <img src="weddingphotos/pexels-suraj-galgale-1822752-16196490.jpg" alt="A bride and groom at their wedding" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-8">
+                        <h3 class="text-3xl font-bold text-white">Wedding Photos</h3>
+                        <p class="text-white/80 mt-2">View Gallery &rarr;</p>
+                    </div>
+                </a>
 
-      // Validate DOB
-      if (dob === "") {
-        document.getElementById("dobError").textContent = "Date of Birth is required.";
-        isValid = false;
-      }
-   
-    // Simple email validator
-    function validateEmail(email) {
-      const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-      return re.test(String(email).toLowerCase());
-    }
-  </script>
+                <a href="party.html" class="group relative block h-80 rounded-lg overflow-hidden shadow-2xl">
+                    <img src="partphotos/pexels-wendywei-1190298.jpg" alt="People having fun at a party" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-8">
+                        <h3 class="text-3xl font-bold text-white">Party Photos</h3>
+                        <p class="text-white/80 mt-2">View Gallery &rarr;</p>
+                    </div>
+                </a>
+
+                <a href="portrait.html" class="group relative block h-80 rounded-lg overflow-hidden shadow-2xl">
+                    <img src="portraitphotos/pexels-manjeet-singh-yadav-462762-1162983.jpg" alt="A closeup portrait of a man" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-8">
+                        <h3 class="text-3xl font-bold text-white">Portrait Photos</h3>
+                        <p class="text-white/80 mt-2">View Gallery &rarr;</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        
+        
+
+        <section id="contact" class="my-24 scroll-mt-20 reveal-element">
+    <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-brand-light mb-4">Let's Create Together</h2>
+        <p class="max-w-2xl mx-auto text-brand-gray">Have a project in mind, a question, or just want to say hello? I'd love to hear from you.</p>
+        <div class="w-24 h-1 bg-brand-accent mx-auto mt-4 rounded"></div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start bg-brand-dark/50 p-8 md:p-12 rounded-xl shadow-2xl">
+        
+        <div>
+            <h3 class="text-2xl font-semibold text-brand-light mb-6">Send Me a Message</h3>
+            <form action="#" method="POST" class="space-y-6">
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="w-5 h-5 text-brand-gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <input type="text" name="name" class="w-full pl-10 pr-4 py-3 bg-brand-dark/50 border border-white/10 text-brand-light rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-accent transition-all" placeholder="Your Name" required>
+                </div>
+
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="w-5 h-5 text-brand-gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                        </svg>
+                    </div>
+                    <input type="email" name="email" class="w-full pl-10 pr-4 py-3 bg-brand-dark/50 border border-white/10 text-brand-light rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-accent transition-all" placeholder="Your Email" required>
+                </div>
+
+                <div>
+                    <textarea name="message" rows="5" class="w-full px-4 py-3 bg-brand-dark/50 border border-white/10 text-brand-light rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-accent transition-all" placeholder="Tell me about your vision..." required></textarea>
+                </div>
+
+                <div class="text-left">
+                    <button type="submit" class="inline-flex items-center gap-3 bg-brand-accent hover:bg-yellow-600 text-brand-dark font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
+                        <span>Send Message</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="space-y-8">
+            <div>
+                <h3 class="text-2xl font-semibold text-brand-light mb-4">Contact Details</h3>
+                <ul class="space-y-4 text-brand-gray">
+                    <li class="flex items-center gap-4">
+                        <svg class="w-6 h-6 text-brand-accent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                        <a href="pateljil648@gmail.com" class="hover:text-brand-accent">pateljil648@gmail.com</a>
+                    </li>
+                    <li class="flex items-center gap-4">
+                        <svg class="w-6 h-6 text-brand-accent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                        <span>+91 99742 38846</span>
+                    </li>
+                    <li class="flex items-center gap-4">
+                        <svg class="w-6 h-6 text-brand-accent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        <span>Rabod , Panchmahal , Gujarat , India</span>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-2xl font-semibold text-brand-light mb-4">Follow Me</h3>
+                <div class="flex space-x-6">
+                    <a href="https://www.instagram.com/jeel__patel__5042/?utm_source=ig_web_button_share_sheet" class="text-brand-gray hover:text-brand-accent transition-colors"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.06-1.004.048-1.625.211-2.126.41-1.176.452-1.975 1.25-2.426 2.426-.2.501-.362 1.122-.41 2.126-.049 1.023-.06 1.351-.06 3.807s.011 2.784.06 3.807c.048 1.004.211 1.625.41 2.126.452 1.176 1.25 1.975 2.426 2.426.501.2 1.122.362 2.126.41 1.023.049 1.351.06 3.807.06h.468c2.456 0 2.784-.011 3.807-.06 1.004-.048 1.625-.211 2.126-.41 1.176-.452 1.975-1.25 2.426-2.426.2-.501.362-1.122.41-2.126.049-1.023.06-1.351.06-3.807s-.011-2.784-.06-3.807c-.048-1.004-.211-1.625-.41-2.126-.452-1.176-1.25-1.975-2.426-2.426-.501-.2-1.122-.362-2.126-.41-1.023-.049-1.351-.06-3.807-.06z" clip-rule="evenodd" /><path d="M12 6.848c-2.841 0-5.152 2.311-5.152 5.152s2.311 5.152 5.152 5.152 5.152-2.311 5.152-5.152S14.841 6.848 12 6.848zm0 8.482c-1.84 0-3.33-1.49-3.33-3.33s1.49-3.33 3.33-3.33 3.33 1.49 3.33 3.33-1.49 3.33-3.33 3.33zM16.965 6.57c-.6 0-1.086.486-1.086 1.086s.486 1.086 1.086 1.086 1.086-.486 1.086-1.086-.486-1.086-1.086-1.086z" /></svg></a>
+                    <a href="https://www.facebook.com/share/1EW1Ke8Xq1/" class="text-brand-gray hover:text-brand-accent transition-colors"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.59 0 0 .59 0 1.325v21.35C0 23.41.59 24 1.325 24H12.82v-9.29h-3.128v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.735 0 1.325-.59 1.325-1.325v-21.35C24 .59 23.41 0 22.675 0z" /></svg></a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+    </main>
+
+    <footer class="bg-black py-8">
+        <div class="container mx-auto text-center text-brand-gray">
+            <p>&copy; 2025 Photon Dreams. All rights reserved. Crafted with ❤️.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Gallery Image Auto-Swipe
+        const galleryImages = document.querySelectorAll('.gallery-image');
+        let currentImageIndex = 0;
+        function showNextImage() {
+            if (galleryImages.length > 0) {
+                galleryImages[currentImageIndex].classList.remove('active');
+                currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+                galleryImages[currentImageIndex].classList.add('active');
+            }
+        }
+        setInterval(showNextImage, 4000);
+
+        // Scroll Reveal Animation & Number Counter
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+
+                    if (entry.target.id === 'achievements') {
+                        const counters = entry.target.querySelectorAll('.counter-number');
+                        const duration = 2000;
+
+                        counters.forEach(counter => {
+                            if (counter.classList.contains('animated')) return;
+                            counter.classList.add('animated');
+
+                            const target = +counter.dataset.target;
+                            const prefix = counter.dataset.prefix || '';
+                            const suffix = counter.dataset.suffix || '';
+                            let startTimestamp = null;
+
+                            const step = (timestamp) => {
+                                if (!startTimestamp) startTimestamp = timestamp;
+                                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                                const currentValue = Math.floor(progress * target);
+                                counter.innerText = prefix + currentValue.toLocaleString() + suffix;
+                                if (progress < 1) {
+                                    window.requestAnimationFrame(step);
+                                } else {
+                                    counter.innerText = prefix + target.toLocaleString() + suffix;
+                                }
+                            };
+                            window.requestAnimationFrame(step);
+                        });
+                        revealObserver.unobserve(entry.target);
+                    }
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        const revealElements = document.querySelectorAll('.reveal-element');
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Navigation Active State Animation Script
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('nav a.nav-link');
+
+        const navObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, { 
+            rootMargin: '-50% 0px -50% 0px' 
+        });
+
+        sections.forEach(section => {
+            navObserver.observe(section);
+        });
+    </script>
 
 </body>
 </html>
